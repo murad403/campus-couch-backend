@@ -1,5 +1,5 @@
 import { ErrorRequestHandler } from "express";
-import { TError } from "../interface/error";
+import { TError } from "../interface/error.interface";
 
 const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
     console.log("Global error", err);
