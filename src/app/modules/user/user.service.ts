@@ -1,14 +1,18 @@
+import { config } from "../../config";
 import { TUser } from "./user.interface";
-import User from "./user.model"
-
+import User from "./user.model";
+import bcrypt from "bcrypt";
 
 const signUpUserIntoDB = async(payload: TUser) =>{
-    const existsUser = await User.find({email: payload.email});
+    const existsUser = await User.findOne({email: payload?.email});
     if(existsUser){
         throw new Error("User already exists");
     }
-    const newUser = await User.create(payload);
-    return newUser;
+    const hashedPassword = await bcrypt.hash(payload.password, config.saltRound);
+    const newUser = await User.create({...payload, password: hashedPassword});
+    const userObject = newUser.toObject();
+    const {password, __v, ...safeUser} = userObject;
+    return safeUser;
 }
 
 export const UserServices = {

@@ -6,10 +6,12 @@ const userSchema = new Schema<TUser>({
     email: {type: String, required: true, unique: true},
     password: {type: String, required: true},
     termsAndCondition: {type: Boolean, required: true},
-    image: {type: String, required: true, default: null},
-    phoneNumber: {type: String, required: true, default: null},
-    address: {type: String, required: true, default: null},
-    shippingAddress: {type: String, required: true, default: null},
+    image: {type: String, default: null},
+    phoneNumber: {type: String, default: null},
+    address: {type: String, default: null},
+    shippingAddress: {type: String, default: null},
+}, {
+    timestamps: true
 })
 
 const User = mongoose.models.User || model<TUser>("User", userSchema);
