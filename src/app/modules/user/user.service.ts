@@ -1,5 +1,5 @@
 import { config } from "../../config";
-import { TSignInUser, TSignUpUser } from "./user.interface";
+import { TForgotPassword, TSignInUser, TSignUpUser } from "./user.interface";
 import User from "./user.model";
 import bcrypt from "bcrypt";
 
@@ -29,7 +29,17 @@ const signInUserFromDB = async(payload: TSignInUser) =>{
     return safeUser;
 }
 
+const forgotPasswordIntoDB = async(payload: TForgotPassword) =>{
+    const {email} = payload;
+    const existsUser = await User.findOne({email});
+    if(!existsUser){
+        throw new Error("This user does not exists");
+    }
+    return existsUser;
+}
+
 export const UserServices = {
     signUpUserIntoDB,
-    signInUserFromDB
+    signInUserFromDB,
+    forgotPasswordIntoDB
 }
