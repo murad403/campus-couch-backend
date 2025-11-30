@@ -8,6 +8,8 @@ export type TSignUpUser = {
     phoneNumber: string;
     address: string;
     shippingAddress: string;
+    otp?: string;
+    expireIn?: Date;
 }
 
 export type TSignInUser = {

@@ -10,6 +10,8 @@ const userSchema = new Schema<TSignUpUser>({
     phoneNumber: {type: String, default: null},
     address: {type: String, default: null},
     shippingAddress: {type: String, default: null},
+    otp: {type: String},
+    expireIn: {type: Date}
 }, {
     timestamps: true
 })

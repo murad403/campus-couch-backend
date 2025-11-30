@@ -1,4 +1,5 @@
 import { config } from "../../config";
+import sendMail from "../../utils/sendMail";
 import { TForgotPassword, TSignInUser, TSignUpUser } from "./user.interface";
 import User from "./user.model";
 import bcrypt from "bcrypt";
@@ -35,6 +36,12 @@ const forgotPasswordIntoDB = async(payload: TForgotPassword) =>{
     if(!existsUser){
         throw new Error("This user does not exists");
     }
+    const otp = String(Math.floor(100000 + Math.random() * 900000));
+    sendMail({email: existsUser.email, subject: 'Reset your password within ten mins!', message: otp});
+    const otpExpireTime = Date.now() + 5 * 60 * 1000;
+    existsUser.otp = otp;
+    existsUser.expireIn = new Date(otpExpireTime);
+    await existsUser.save();
     return existsUser;
 }
 
