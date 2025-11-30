@@ -1,5 +1,5 @@
 
-export type TUser = {
+export type TSignUpUser = {
     name: string;
     email: string;
     password: string;
@@ -8,4 +8,9 @@ export type TUser = {
     phoneNumber: string;
     address: string;
     shippingAddress: string;
+}
+
+export type TSignInUser = {
+    email: string;
+    password: string;
 }

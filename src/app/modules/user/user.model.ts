@@ -1,7 +1,7 @@
 import mongoose, { model, Schema } from "mongoose";
-import { TUser } from "./user.interface";
+import { TSignUpUser } from "./user.interface";
 
-const userSchema = new Schema<TUser>({
+const userSchema = new Schema<TSignUpUser>({
     name: {type: String, required: true},
     email: {type: String, required: true, unique: true},
     password: {type: String, required: true},
@@ -14,5 +14,5 @@ const userSchema = new Schema<TUser>({
     timestamps: true
 })
 
-const User = mongoose.models.User || model<TUser>("User", userSchema);
+const User = mongoose.models.User || model<TSignUpUser>("User", userSchema);
 export default User;

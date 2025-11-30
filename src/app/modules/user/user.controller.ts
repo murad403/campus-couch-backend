@@ -7,7 +7,6 @@ import generateToken from "../../utils/generateToken";
 const signUpUser = catchAsync(async (req, res) => {
     const newUser = await UserServices.signUpUserIntoDB(req.body);
     const {accessToken, refreshToken} = generateToken(newUser);
-    console.log("Newuser", newUser)
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
@@ -16,6 +15,21 @@ const signUpUser = catchAsync(async (req, res) => {
     })
 })
 
+
+const signInUser = catchAsync(async (req, res) => {
+    const user = await UserServices.signInUserFromDB(req.body);
+    const {accessToken, refreshToken} = generateToken(user);
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'Sing in successfully',
+        data: {user, accessToken, refreshToken},
+    })
+})
+
+
+
 export const UserControllers = {
-    signUpUser
+    signUpUser,
+    signInUser
 }
