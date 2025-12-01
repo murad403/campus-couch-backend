@@ -1,6 +1,6 @@
 import { config } from "../../config";
 import sendMail from "../../utils/sendMail";
-import { TForgotPassword, TSignInUser, TSignUpUser, TVerfifyOtp } from "./user.interface";
+import { TForgotPassword, TResetPassword, TSignInUser, TSignUpUser, TVerfifyOtp } from "./user.interface";
 import User from "./user.model";
 import bcrypt from "bcrypt";
 
@@ -64,9 +64,22 @@ const verifyOtpFromDB = async(payload: TVerfifyOtp) =>{
     return existsUser;
 }
 
+const resetPasswordFromDB = async(payload: TResetPassword) =>{
+    const {email, newPassword} = payload;
+    const existsUser = await User.findOne({email});
+    if(!existsUser){
+        throw new Error("User does not exists");
+    }
+    const hashedPassword = await bcrypt.hash(newPassword, config.saltRound);
+    existsUser.password = hashedPassword;
+    await existsUser.save();
+    return existsUser;
+}
+
 export const UserServices = {
     signUpUserIntoDB,
     signInUserFromDB,
     forgotPasswordIntoDB,
-    verifyOtpFromDB
+    verifyOtpFromDB,
+    resetPasswordFromDB
 }

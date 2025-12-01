@@ -48,9 +48,22 @@ const verifyOtp = catchAsync(async(req, res) =>{
 })
 
 
+const resetPassword = catchAsync(async(req, res) =>{
+    const user = await UserServices.resetPasswordFromDB(req.body);
+    const {accessToken, refreshToken} = generateToken(user);
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'Reset password successfully',
+        data: {user, accessToken, refreshToken}
+    })
+})
+
+
 export const UserControllers = {
     signUpUser,
     signInUser,
     forgotPassword,
-    verifyOtp
+    verifyOtp,
+    resetPassword
 }

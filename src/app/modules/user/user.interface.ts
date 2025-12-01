@@ -25,3 +25,8 @@ export type TVerfifyOtp = {
     email: string;
     otp: string;
 }
+
+export type TResetPassword = {
+    email: string;
+    newPassword: string;
+}

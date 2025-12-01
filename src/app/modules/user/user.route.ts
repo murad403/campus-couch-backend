@@ -7,5 +7,6 @@ router.post('/sign-up', UserControllers.signUpUser);
 router.post('/sign-in', UserControllers.signInUser);
 router.post('/forgot-password', UserControllers.forgotPassword);
 router.post('/verify-otp', UserControllers.verifyOtp);
+router.post('/reset-password', UserControllers.resetPassword);
 
 export const UserRoutes = router;
