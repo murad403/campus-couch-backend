@@ -20,3 +20,8 @@ export type TSignInUser = {
 export type TForgotPassword = {
     email: string;
 }
+
+export type TVerfifyOtp = {
+    email: string;
+    otp: string;
+}

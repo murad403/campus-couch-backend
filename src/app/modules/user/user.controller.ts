@@ -27,7 +27,6 @@ const signInUser = catchAsync(async (req, res) => {
     })
 })
 
-
 const forgotPassword = catchAsync(async (req, res) => {
     const user = await UserServices.forgotPasswordIntoDB(req.body);
     sendResponse(res, {
@@ -38,10 +37,20 @@ const forgotPassword = catchAsync(async (req, res) => {
     })
 })
 
+const verifyOtp = catchAsync(async(req, res) =>{
+    const user = await UserServices.verifyOtpFromDB(req.body);
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'Otp verified successfully',
+        data: {user},
+    })
+})
 
 
 export const UserControllers = {
     signUpUser,
     signInUser,
-    forgotPassword
+    forgotPassword,
+    verifyOtp
 }

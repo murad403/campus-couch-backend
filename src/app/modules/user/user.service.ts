@@ -1,6 +1,6 @@
 import { config } from "../../config";
 import sendMail from "../../utils/sendMail";
-import { TForgotPassword, TSignInUser, TSignUpUser } from "./user.interface";
+import { TForgotPassword, TSignInUser, TSignUpUser, TVerfifyOtp } from "./user.interface";
 import User from "./user.model";
 import bcrypt from "bcrypt";
 
@@ -37,6 +37,7 @@ const forgotPasswordIntoDB = async(payload: TForgotPassword) =>{
         throw new Error("This user does not exists");
     }
     const otp = String(Math.floor(100000 + Math.random() * 900000));
+    // console.log(typeof otp)
     sendMail({email: existsUser.email, subject: 'Reset your password within ten mins!', message: otp});
     const otpExpireTime = Date.now() + 5 * 60 * 1000;
     existsUser.otp = otp;
@@ -45,8 +46,27 @@ const forgotPasswordIntoDB = async(payload: TForgotPassword) =>{
     return existsUser;
 }
 
+const verifyOtpFromDB = async(payload: TVerfifyOtp) =>{
+    const {email, otp} = payload;
+    const existsUser = await User.findOne({email});
+    if(!existsUser){
+        throw new Error('User does not exists');
+    }
+    if(existsUser.expireIn < new Date()){
+        throw new Error('OTP expired');
+    }
+    if(existsUser.otp !== otp){
+        throw new Error('Invalid OTP');
+    }
+    existsUser.otp = null;
+    existsUser.expireIn = null;
+    await existsUser.save();
+    return existsUser;
+}
+
 export const UserServices = {
     signUpUserIntoDB,
     signInUserFromDB,
-    forgotPasswordIntoDB
+    forgotPasswordIntoDB,
+    verifyOtpFromDB
 }
